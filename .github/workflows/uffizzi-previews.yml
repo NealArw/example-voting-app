@@ -172,11 +172,8 @@ jobs:
     with:
       compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
       compose-file-cache-path: docker-compose.rendered.yml
-      server: https://app.uffizzi.com
-      username: danila.polovinkin+test38877@dualbootpartners.com
-      project: urban-mayer-e4pa
+      server: https://app.uffizzi.com/
     secrets:
-      password: ${{ secrets.UFFIZZI_PASSWORD }}
       url-username: admin
       url-password: ${{ secrets.URL_PASSWORD }}
       personal-access-token: ${{ secrets.GHCR_ACCESS_TOKEN }}
@@ -194,12 +191,8 @@ jobs:
     with:
       compose-file-cache-key: ''
       compose-file-cache-path: docker-compose.rendered.yml
-      server: https://app.uffizzi.com
-      username: danila.polovinkin+test38877@dualbootpartners.com
-      project: urban-mayer-e4pa
+      server: https://app.uffizzi.com/
     permissions:
       contents: read
       pull-requests: write
       id-token: write
-    secrets:
-      password: ${{ secrets.UFFIZZI_PASSWORD }}
