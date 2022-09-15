@@ -147,9 +147,9 @@ jobs:
           export RESULT_IMAGE
           LOADBALANCER_IMAGE=$(echo ${{ needs.build-loadbalancer.outputs.tags }})
           export LOADBALANCER_IMAGE
-          PGUSER=postgres
+          PGUSER=${{ secrets.PGUSER }}
           export PGUSER
-          PGPASSWORD=postgres
+          PGPASSWORD=${{ secrets.PGPASSWORD }}
           export PGPASSWORD
           # Render simple template from environment variables.
           envsubst < docker-compose.template.yml > docker-compose.rendered.yml
@@ -167,7 +167,7 @@ jobs:
     name: Use Remote Workflow to Preview on Uffizzi
     needs:
       - render-compose-file
-    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2
+    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@feature/16_add_credentials_input
     if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
     with:
       compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
@@ -179,6 +179,13 @@ jobs:
       personal-access-token: ${{ secrets.GHCR_ACCESS_TOKEN }}
       dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
       dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      gcloud-service-key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-registry-url: ${{ secrets.AWS_REGISTRY_URL }}
+      docker-registry-username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      docker-registry-password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      docker-registry-url: ${{ secrets.DOCKER_REGISTRY_URL }}
     permissions:
       contents: read
       pull-requests: write
@@ -186,12 +193,14 @@ jobs:
 
   delete-uffizzi-preview:
     name: Use Remote Workflow to Delete an Existing Preview
-    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2
+    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@feature/16_add_credentials_input
     if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
     with:
       compose-file-cache-key: ''
       compose-file-cache-path: docker-compose.rendered.yml
       server: https://app.qa-gke.uffizzi.com/
+    secrets:
+      password: ${{ secrets.UFFIZZI_PASSWORD }}
     permissions:
       contents: read
       pull-requests: write
