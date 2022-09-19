@@ -185,6 +185,7 @@ jobs:
       docker-registry-username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
       docker-registry-password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       docker-registry-url: ${{ secrets.DOCKER_REGISTRY_URL }}
+      gcloud-service-key: ${{ secrets.GCLOUD_SERVICE_KEY }}
     permissions:
       contents: read
       pull-requests: write
